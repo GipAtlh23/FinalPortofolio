@@ -1,28 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title data-en="Giip Portfolio" data-id="Portofolio Giip">Giip Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="111646b40fe5dcfd0bf34dcd8fe9df05.jpg">
     <style>
+        :root {
+            --text-body: #ffffff;
+            --text-body-light: #f1f5f9;
+            --text-muted: #cbd5e1;
+            --text-dark: #0f172a;
+            --text-dark-muted: #334155;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --card-bg-light: rgba(255, 255, 255, 0.85);
+            --card-border-light: rgba(0, 0, 0, 0.12);
+            --gradient-start: #FF6B6B;
+            --gradient-end: #4ECDC4;
+            --gradient-start-light: #d94040;
+            --gradient-end-light: #1f8a82;
+        }
+
         * {
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, -webkit-text-fill-color 0.3s ease;
         }
 
         .gradient-text {
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
         .card-glow {
-            transition: all 0.3s ease;
+            transition: all 0.35s ease;
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             border-color: rgba(148, 51, 234, 0.3);
         }
@@ -31,6 +52,7 @@
             border-color: rgba(148, 51, 234, 0.6);
             transform: translateY(-8px);
         }
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -42,20 +64,26 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
+
         .timeline-item {
             opacity: 0;
             transform: translateX(var(--translate-x));
             position: relative;
         }
-        .timeline-item.right { --translate-x: 30px; }
-        .timeline-item.left { --translate-x: -30px; }
+        .timeline-item.right {
+            --translate-x: 30px;
+        }
+        .timeline-item.left {
+            --translate-x: -30px;
+        }
         .timeline-item.visible {
             opacity: 1;
             transform: translateX(0);
             transition: all 0.6s ease-out;
         }
+
         .timeline-icon {
             background: #4ECDC4;
             color: #111827;
@@ -68,6 +96,7 @@
             font-size: 1rem;
             flex-shrink: 0;
         }
+
         .progress-bar {
             position: absolute;
             left: 0;
@@ -77,19 +106,24 @@
             background: linear-gradient(to bottom, #4ECDC4, #FF6B6B);
             transition: height 0.3s ease;
         }
+
         .hobby-item {
             transition: all 0.3s ease;
+            cursor: default;
         }
         .hobby-item:hover {
             transform: scale(1.05);
             border-color: rgba(148, 51, 234, 0.8);
             background: rgba(148, 51, 234, 0.2);
         }
+
         .profile-container {
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.35s ease;
         }
-        .profile-container:hover { transform: scale(1.05); }
+        .profile-container:hover {
+            transform: scale(1.05);
+        }
         .profile-container::before {
             content: '';
             position: absolute;
@@ -101,6 +135,7 @@
             background: radial-gradient(circle, rgba(78, 205, 196, 0.2), transparent);
             z-index: -1;
         }
+
         .liquid-glass {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px) saturate(180%);
@@ -113,7 +148,6 @@
             box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        /* FULL PAGE CANVAS BACKGROUND */
         #full-canvas-bg {
             position: fixed;
             top: 0;
@@ -123,104 +157,270 @@
             z-index: 0;
             pointer-events: none;
         }
-        body > section, nav, #contact, .mt-16, #certificates, #experience, #projects, #about, #home {
+
+        body>section,
+        nav,
+        #contact,
+        .mt-16,
+        #certificates,
+        #experience,
+        #projects,
+        #about,
+        #hero {
             position: relative;
             z-index: 2;
         }
-        nav { z-index: 50 !important; }
-        .fixed.bottom-6.right-6 { z-index: 9999 !important; }
-
-        /* LIGHT MODE OVERRIDES */
-        body.light-mode {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9eef5 100%);
+        nav {
+            z-index: 50 !important;
         }
+        .fixed.bottom-4.right-4 {
+            z-index: 9999 !important;
+        }
+
+        /* ========== DARK MODE (default) ========== */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            color: #ffffff;
+        }
+        body .text-body {
+            color: #f1f5f9;
+        }
+        body .text-muted {
+            color: #cbd5e1;
+        }
+
+        /* ========== LIGHT MODE ========== */
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 50%, #f0f4f8 100%);
+            color: #0f172a;
+        }
+
+        /* Light mode: all body text becomes dark */
+        body.light-mode p,
+        body.light-mode span:not(.gradient-text):not(#typed-cursor):not(.timeline-icon),
+        body.light-mode li,
+        body.light-mode label,
+        body.light-mode h3:not(.gradient-text),
+        body.light-mode h4,
+        body.light-mode h5,
+        body.light-mode h6,
+        body.light-mode .text-gray-100,
+        body.light-mode .text-gray-200,
+        body.light-mode .text-gray-300,
+        body.light-mode .text-white,
+        body.light-mode .text-white\/90,
+        body.light-mode [class*="text-gray-"],
+        body.light-mode #typed-text,
+        body.light-mode input,
+        body.light-mode textarea,
+        body.light-mode input::placeholder,
+        body.light-mode textarea::placeholder,
+        body.light-mode .hobby-item,
+        body.light-mode nav a:not(.gradient-text),
+        body.light-mode #mobile-menu a,
+        body.light-mode button#theme-toggle span,
+        body.light-mode button#lang-en,
+        body.light-mode button#lang-id {
+            color: #0f172a !important;
+        }
+
+        /* Light mode: muted secondary text */
+        body.light-mode .text-gray-300,
+        body.light-mode p.text-gray-300,
+        body.light-mode [class*="text-gray-400"] {
+            color: #334155 !important;
+        }
+
+        /* Light mode: gradient text preserved for titles/subtitles */
         body.light-mode .gradient-text {
-            background: linear-gradient(45deg, #e65c5c, #2c9c94);
+            background: linear-gradient(45deg, var(--gradient-start-light), var(--gradient-end-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
+        /* Light mode: nav */
         body.light-mode nav {
-            background: rgba(255, 255, 255, 0.7) !important;
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.75) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
         }
-        body.light-mode nav a, body.light-mode nav .gradient-text {
-            color: #1e293b !important;
-            -webkit-text-fill-color: #1e293b;
-            background: none;
-        }
-        body.light-mode .text-gray-200, body.light-mode .text-gray-300, body.light-mode .text-gray-100 {
+        body.light-mode nav a:not(.gradient-text) {
             color: #1e293b !important;
         }
-        body.light-mode .bg-white\/8, body.light-mode .bg-white\/10, body.light-mode .bg-white\/5 {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(6px);
-            border-color: rgba(0, 0, 0, 0.12) !important;
+        body.light-mode nav a:hover {
+            color: #0891b2 !important;
         }
-        body.light-mode .border-white\/15, body.light-mode .border-white\/20, body.light-mode .border-white\/30 {
+        body.light-mode #mobile-menu-btn {
+            color: #1e293b !important;
+        }
+
+        /* Light mode: cards */
+        body.light-mode .bg-white\/8,
+        body.light-mode .bg-white\/10,
+        body.light-mode .bg-white\/5,
+        body.light-mode .bg-white\/20 {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+        body.light-mode .border-white\/15,
+        body.light-mode .border-white\/20,
+        body.light-mode .border-white\/30 {
             border-color: rgba(0, 0, 0, 0.12) !important;
         }
         body.light-mode .card-glow {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
             border-color: rgba(0, 0, 0, 0.1);
         }
         body.light-mode .card-glow:hover {
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.12);
-            border-color: rgba(78, 205, 196, 0.6);
+            box-shadow: 0 20px 36px rgba(0, 0, 0, 0.1);
+            border-color: rgba(78, 205, 196, 0.5);
         }
         body.light-mode .liquid-glass {
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
+
+        /* Light mode: timeline */
         body.light-mode .timeline-icon {
-            background: #2c9c94;
-            color: white;
+            background: #1f8a82;
+            color: #ffffff;
         }
         body.light-mode .progress-bar {
-            background: linear-gradient(to bottom, #2c9c94, #e65c5c);
+            background: linear-gradient(to bottom, #1f8a82, #d94040);
         }
+
+        /* Light mode: hobbies */
         body.light-mode .hobby-item {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.04);
             border-color: rgba(0, 0, 0, 0.1);
-            color: #1e293b;
+            color: #1e293b !important;
         }
         body.light-mode .hobby-item:hover {
-            background: rgba(78, 205, 196, 0.2);
-            border-color: #2c9c94;
+            background: rgba(78, 205, 196, 0.18);
+            border-color: #1f8a82;
         }
-        body.light-mode .bg-white\/20, body.light-mode input, body.light-mode textarea {
-            background: rgba(255, 255, 255, 0.8) !important;
-            border-color: rgba(0, 0, 0, 0.2);
-            color: #0f172a;
-        }
+
+        /* Light mode: profile badge */
         body.light-mode .profile-container .absolute.bg-gradient-to-r {
-            background: linear-gradient(90deg, #2563eb, #2c9c94);
-            color: white;
+            background: linear-gradient(90deg, #2563eb, #1f8a82);
+            color: #ffffff;
         }
+
+        /* Light mode: loading screen */
         body.light-mode #loading-screen {
             background: rgba(240, 245, 255, 0.95);
         }
-        body.light-mode .bg-gradient-to-br.from-slate-950 {
-            background: linear-gradient(135deg, #f5f7fa 0%, #eef2f8 100%);
+        body.light-mode #loading-screen .gradient-text {
+            -webkit-text-fill-color: transparent;
         }
 
-        /* PERBAIKAN KHUSUS RESPONSIVE & NAVBAR */
+        /* Light mode: floating controls */
+        body.light-mode .floating-controls-group {
+            background: rgba(255, 255, 255, 0.75) !important;
+            border-color: rgba(0, 0, 0, 0.15) !important;
+        }
+        body.light-mode .floating-controls-group button {
+            color: #1e293b !important;
+            background: rgba(0, 0, 0, 0.04);
+        }
+        body.light-mode .floating-controls-group button:hover {
+            background: rgba(6, 182, 212, 0.3) !important;
+        }
+        body.light-mode .floating-controls-group button.bg-cyan-500\/70 {
+            background: rgba(6, 182, 212, 0.5) !important;
+            color: #0f172a !important;
+        }
+
+        /* Light mode: contact form inputs */
+        body.light-mode input,
+        body.light-mode textarea {
+            background: rgba(255, 255, 255, 0.7) !important;
+            border-color: rgba(0, 0, 0, 0.2) !important;
+            color: #0f172a !important;
+        }
+        body.light-mode input::placeholder,
+        body.light-mode textarea::placeholder {
+            color: #64748b !important;
+        }
+        body.light-mode input:focus,
+        body.light-mode textarea:focus {
+            ring-color: #0891b2 !important;
+            border-color: #0891b2 !important;
+        }
+        body.light-mode .bg-white\/20 {
+            background: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* Light mode: skill cards icon colors preserved */
+        body.light-mode .skill-card .text-blue-400 {
+            color: #3b82f6 !important;
+        }
+        body.light-mode .skill-card .text-green-400 {
+            color: #22c55e !important;
+        }
+        body.light-mode .skill-card .text-purple-400 {
+            color: #a855f7 !important;
+        }
+
+        /* Light mode: social icons */
+        body.light-mode .text-gray-400 {
+            color: #64748b !important;
+        }
+        body.light-mode a.text-gray-400:hover {
+            color: #3b82f6 !important;
+        }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .timeline-item { margin-left: 1.5rem; margin-right: 0.5rem; --translate-x: -20px !important; }
-            .timeline-item .absolute { left: -1rem; }
-            .timeline-icon { width: 1.75rem; height: 1.75rem; font-size: 0.85rem; }
-            .progress-bar { width: 3px; }
-            .container { padding-left: 1rem; padding-right: 1rem; }
-        }
-        @media (max-width: 480px) {
-            .timeline-item { margin-left: 0.75rem; }
-            .timeline-icon { width: 1.5rem; height: 1.5rem; font-size: 0.7rem; }
-            .profile-container .absolute { font-size: 0.8rem; padding: 0.25rem 0.75rem; bottom: -1rem; white-space: nowrap; }
-            .hobby-item { padding: 0.5rem 1rem; font-size: 0.8rem; }
+            .timeline-item {
+                margin-left: 1.5rem;
+                margin-right: 0.5rem;
+                --translate-x: -20px !important;
+            }
+            .timeline-item .absolute {
+                left: -1rem;
+            }
+            .timeline-icon {
+                width: 1.75rem;
+                height: 1.75rem;
+                font-size: 0.85rem;
+            }
+            .progress-bar {
+                width: 3px;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
         }
 
-        /* Floating controls lebih kecil di HP */
+        @media (max-width: 480px) {
+            .timeline-item {
+                margin-left: 0.75rem;
+            }
+            .timeline-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-size: 0.7rem;
+            }
+            .profile-container .absolute {
+                font-size: 0.8rem;
+                padding: 0.25rem 0.75rem;
+                bottom: -1rem;
+                white-space: nowrap;
+            }
+            .hobby-item {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
         @media (max-width: 640px) {
             .floating-controls-group {
                 gap: 0.5rem !important;
@@ -235,6 +435,11 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* Smooth section transitions */
+        section {
+            scroll-margin-top: 80px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white min-h-screen overflow-x-hidden">
@@ -242,25 +447,31 @@
     <!-- FULL PAGE 3D BACKGROUND -->
     <div id="full-canvas-bg"></div>
 
-    <!-- Navbar Responsive: lebih kecil di tablet & HP -->
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="text-xl sm:text-3xl gradient-text flex items-center space-x-2">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span data-en="Loading Portfolio..." data-id="Memuat Portofolio...">Loading Portfolio...</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
     <nav class="fixed w-full z-50 bg-white/10 backdrop-blur-2xl border-b border-white/10 shadow-2xl">
         <div class="container mx-auto px-4 sm:px-6 py-2 sm:py-3 md:py-4">
             <div class="flex items-center justify-between">
                 <div class="text-lg xs:text-xl sm:text-2xl md:text-3xl font-extrabold gradient-text tracking-tight whitespace-nowrap">Ghifari Atallah</div>
-                <!-- Desktop + tablet menu: lebih rapat di tablet -->
                 <div class="hidden md:flex space-x-3 lg:space-x-6 xl:space-x-10">
-                    <a href="#home" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="Home" data-id="Beranda">Home</a>
-                    <a href="#projects" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="Projects" data-id="Proyek">Projects</a>
-                    <a href="#experience" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="Experience" data-id="Pengalaman">Experience</a>
-                    <a href="#certificates" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="Certificates" data-id="Sertifikat">Certificates</a>
-                    <a href="#about" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="About" data-id="Tentang">About</a>
-                    <a href="#contact" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300" data-en="Contact" data-id="Kontak">Contact</a>
+                    <a href="#home" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="Home" data-id="Beranda">Home</a>
+                    <a href="#about" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="About" data-id="Tentang">About</a>
+                    <a href="#projects" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="Projects" data-id="Proyek">Projects</a>
+                    <a href="#experience" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="Experience" data-id="Pengalaman">Experience</a>
+                    <a href="#certificates" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="Certificates" data-id="Sertifikat">Certificates</a>
+                    <a href="#contact" class="relative text-sm lg:text-base xl:text-lg font-medium hover:text-cyan-400 transition duration-300 text-white" data-en="Contact" data-id="Kontak">Contact</a>
                 </div>
                 <button id="mobile-menu-btn" class="md:hidden focus:outline-none text-white p-1.5 hover:bg-white/10 rounded-lg transition">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
-            <!-- Mobile menu lebih kecil dan rapi -->
             <div id="mobile-menu" class="hidden md:hidden mt-3 space-y-2 px-2 pb-3">
                 <a href="#home" class="block text-center py-2 px-4 text-white text-sm font-medium rounded-full bg-white/10 border border-white/20 backdrop-blur-lg hover:bg-cyan-500/40 transition-all">Home</a>
                 <a href="#about" class="block text-center py-2 px-4 text-white text-sm font-medium rounded-full bg-white/10 border border-white/20 backdrop-blur-lg hover:bg-cyan-500/40 transition-all">About</a>
@@ -272,8 +483,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section dengan padding responsive -->
-    <section id="hero" class="flex flex-col items-center justify-center min-h-[45vh] pt-20 sm:pt-28 md:pt-36 pb-8 mb-12 sm:mb-20 md:mb-32 relative z-10">
+    <!-- Hero Section -->
+    <section id="home" class="flex flex-col items-center justify-center min-h-[45vh] pt-20 sm:pt-28 md:pt-36 pb-8 mb-12 sm:mb-20 md:mb-32 relative z-10">
         <div class="container mx-auto px-4 sm:px-6 text-center">
             <h1 class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 sm:mb-6 gradient-text">Hi, I'm Ghiffari</h1>
             <div class="text-base xs:text-xl sm:text-2xl md:text-3xl font-semibold text-white/90 min-h-[2.5em]">
@@ -282,52 +493,38 @@
         </div>
     </section>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="text-xl sm:text-3xl gradient-text flex items-center space-x-2">
-            <i class="fas fa-spinner fa-spin"></i>
-            <span data-en="Loading Portfolio..." data-id="Memuat Portofolio...">Loading Portfolio...</span>
-        </div>
-    </div>
+    <!-- About Section -->
+    <section id="about" class="py-12 md:py-24 bg-transparent relative z-10">
+        <div class="container mx-auto px-4 sm:px-6">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-16 text-center gradient-text"
+                data-en="About Me"
+                data-id="Tentang Saya">About Me</h2>
 
-    <!-- Floating Controls: Tombol Theme + Bahasa, lebih kecil di HP dan rapi -->
-    <div class="fixed bottom-4 right-4 z-[9999]">
-        <div class="floating-controls-group flex flex-col sm:flex-row gap-2 sm:gap-2 liquid-glass rounded-2xl p-2 sm:p-2 shadow-2xl border border-white/30 bg-white/10 backdrop-blur-xl">
-            <button id="theme-toggle" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl flex items-center justify-center gap-1 sm:gap-2">
-                <i id="theme-icon" class="fas fa-moon text-sm sm:text-base"></i>
-                <span id="theme-text" data-en="Dark" data-id="Gelap" class="hidden xs:inline">Dark</span>
-            </button>
-            <button id="lang-en" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl">EN</button>
-            <button id="lang-id" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl">ID</button>
-        </div>
-    </div>
-    <!-- Foto Profil -->
+            <!-- Foto Profil -->
             <div class="flex justify-center mb-16 relative">
                 <div class="profile-container w-64 h-64 sm:w-80 sm:h-80 relative group">
                     <div class="w-full h-full rounded-full overflow-hidden border-6 border-gradient-to-r from-blue-500 to-cyan-400 shadow-2xl transform transition-all duration-1000 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(78,205,196,0.7)]">
                         <img src="IMG_1111.png" alt="Profile Photo" data-en-alt="Profile Photo" data-id-alt="Foto Profil" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-115 group-hover:rotate-6">
                     </div>
-                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(78,205,196,0.6)] animate-bounce-vivid">
+                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(78,205,196,0.6)]">
                         Ghiffari Atallah
                     </div>
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-400/30 animate-pulse-vivid z-[-1]"></div>
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-400/30 animate-pulse z-[-1]"></div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-                <div class="relative bg-white/8 border border-white/15 p-12 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 about-card shadow-xl\">
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-4 gradient-text\" data-en="Who Am I?" data-id="Siapa Saya?">Who Am I?</h3>
-                    <p class="text-gray-100 text-base md:text-lg leading-relaxed font-light"
+                <div class="relative bg-white/8 border border-white/15 p-12 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 about-card shadow-xl">
+                    <h3 class="text-2xl md:text-3xl font-extrabold mb-4 gradient-text" data-en="Who Am I?" data-id="Siapa Saya?">Who Am I?</h3>
+                    <p class="text-gray-200 text-base md:text-lg leading-relaxed font-light"
                         data-en="I am a passionate SEO Analyst with a strong background in web development and digital marketing. With a keen eye for detail and a love for data-driven strategies, I specialize in optimizing websites to improve search engine rankings and enhance user experience. My journey in the digital world has equipped me with a diverse skill set, allowing me to create impactful online solutions that drive results."
                         data-id="Saya adalah SEO Analyst yang bersemangat dengan latar belakang kuat di web development dan digital marketing. Dengan perhatian tinggi terhadap detail dan strategi berbasis data, saya fokus mengoptimalkan website untuk meningkatkan peringkat mesin pencari dan pengalaman pengguna. Perjalanan saya di dunia digital membekali saya dengan kemampuan yang beragam untuk menciptakan solusi online yang berdampak.">
                         I am a passionate SEO Analyst with a strong background in web development and digital marketing. With a keen eye for detail and a love for data-driven strategies, I specialize in optimizing websites to improve search engine rankings and enhance user experience. My journey in the digital world has equipped me with a diverse skill set, allowing me to create impactful online solutions that drive results.
-
-   
                     </p>
                 </div>
-                <div class="relative bg-white/8 border border-white/15 p-12 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 about-card shadow-xl\">
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-4 gradient-text\" data-en="Vision & Mission" data-id="Visi & Misi">Vision & Mission</h3>
-                    <p class="text-gray-100 text-base md:text-lg leading-relaxed font-light"
+                <div class="relative bg-white/8 border border-white/15 p-12 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 about-card shadow-xl">
+                    <h3 class="text-2xl md:text-3xl font-extrabold mb-4 gradient-text" data-en="Vision & Mission" data-id="Visi & Misi">Vision & Mission</h3>
+                    <p class="text-gray-200 text-base md:text-lg leading-relaxed font-light"
                         data-en="My vision is to create digital solutions that are not only functional but also deliver captivating user experiences. I believe technology should be accessible and add value to everyday life."
                         data-id="Visi saya adalah menciptakan solusi digital yang tidak hanya fungsional, tetapi juga memberikan pengalaman pengguna yang menarik. Saya percaya teknologi harus mudah diakses dan memberi nilai tambah dalam kehidupan sehari-hari.">
                         My vision is to create digital solutions that are not only functional but also deliver captivating user experiences. I believe technology should be accessible and add value to everyday life.
@@ -340,48 +537,44 @@
                     <div class="text-6xl mb-6 text-blue-400 transition-transform duration-300">
                         <i class="fa-brands fa-searchengin"></i>
                     </div>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="SEO Analyst" data-id="Analis SEO">SEO Analyst</h3>
-                    <p class="text-gray-100 text-sm md:text-base font-light">SEMrush, Google Analytics, Google Search Console, Google PageSpeed Insights, </p>
+                    <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="SEO Analyst" data-id="Analis SEO">SEO Analyst</h3>
+                    <p class="text-gray-300 text-sm md:text-base font-light">SEMrush, Google Analytics, Google Search Console, Google PageSpeed Insights</p>
                 </div>
                 <div class="relative bg-white/8 border border-white/15 p-10 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 skill-card shadow-xl">
                     <div class="text-6xl mb-6 text-green-400 transition-transform duration-300">
                         <i class="fas fa-paint-brush"></i>
                     </div>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="UI/UX Design" data-id="Desain UI/UX">UI/UX Design</h3>
-                    <p class="text-gray-100 text-sm md:text-base font-light">Figma, Adobe Photoshop, Adobe Illustrator</p>
+                    <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="UI/UX Design" data-id="Desain UI/UX">UI/UX Design</h3>
+                    <p class="text-gray-300 text-sm md:text-base font-light">Figma, Adobe Photoshop, Adobe Illustrator</p>
                 </div>
                 <div class="relative bg-white/8 border border-white/15 p-10 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 skill-card shadow-xl">
                     <div class="text-6xl mb-6 text-purple-400 transition-transform duration-300">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="Data Analyst" data-id="Analis Data">Data Analyst</h3>
-                    <p class="text-gray-100 text-sm md:text-base font-light">Firebase, Google Analytics</p>
+                    <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="Data Analyst" data-id="Analis Data">Data Analyst</h3>
+                    <p class="text-gray-300 text-sm md:text-base font-light">Firebase, Google Analytics</p>
                 </div>
                 <div class="relative bg-white/8 border border-white/15 p-10 rounded-2xl card-glow backdrop-blur-xl transition-all duration-300 hover:scale-102 skill-card shadow-xl">
                     <div class="text-6xl mb-6 text-purple-400 transition-transform duration-300">
                         <i class="fa-solid fa-code"></i>
                     </div>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="Web Developer" data-id="Pengembang Web">Web Developer</h3>
-                    <p class="text-gray-100 text-sm md:text-base font-light">HTML, CSS, JavaScript, React, Node.js</p>
+                    <h3 class="text-xl md:text-2xl font-extrabold mb-3 gradient-text" data-en="Web Developer" data-id="Pengembang Web">Web Developer</h3>
+                    <p class="text-gray-300 text-sm md:text-base font-light">HTML, CSS, JavaScript, React, Node.js</p>
                 </div>
             </div>
-
-
         </div>
-    </div>
-</section>
+    </section>
 
-            <!-- Projects Section -->
+    <!-- Projects Section -->
     <section id="projects" class="py-24 bg-transparent">
         <div class="container mx-auto px-4 sm:px-6">
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-16 text-center gradient-text"
                 data-en="My Projects"
                 data-id="Proyek Saya">My Projects</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project Card 1 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-56 relative overflow-hidden">
-                        <img src="Screenshot 2026-02-23 at 07.34.58.png" 
+                        <img src="Screenshot%202026-02-23%20at%2007.34.58.png"
                              alt="Planning Digital Content"
                              data-en-alt="Planning Digital Content"
                              data-id-alt="Perencanaan Konten Digital"
@@ -391,14 +584,13 @@
                     <div class="p-6">
                         <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Planning Digital Content" data-id="Perencanaan Konten Digital">Planning Digital Content</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                           data-en="Content marketing is based on creating and sharing online material such as videos, blogs, and social media posts. It is designed to attract interest in a company’s products or services by capturing attention."
-                           data-id="Pemasaran konten berfokus pada pembuatan dan pembagian materi online seperti video, blog, dan postingan media sosial. Strategi ini dirancang untuk menarik minat terhadap produk atau layanan perusahaan dengan menangkap perhatian audiens.">Content marketing is based on creating and sharing online material such as videos, blogs, and social media posts. It is designed to attract interest in a company’s products or services by capturing attention.</p>
+                           data-en="Content marketing is based on creating and sharing online material such as videos, blogs, and social media posts. It is designed to attract interest in a company's products or services by capturing attention."
+                           data-id="Pemasaran konten berfokus pada pembuatan dan pembagian materi online seperti video, blog, dan postingan media sosial. Strategi ini dirancang untuk menarik minat terhadap produk atau layanan perusahaan dengan menangkap perhatian audiens.">Content marketing is based on creating and sharing online material such as videos, blogs, and social media posts. It is designed to attract interest in a company's products or services by capturing attention.</p>
                     </div>
                 </div>
-                <!-- Project Card 2 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-56 relative overflow-hidden">
-                        <img src="Screenshot 2026-02-17 at 13.51.15.png" 
+                        <img src="Screenshot%202026-02-17%20at%2013.51.15.png"
                              alt="USP Data Collection"
                              data-en-alt="USP Data Collection"
                              data-id-alt="Pengumpulan Data USP"
@@ -412,10 +604,9 @@
                            data-id="Marketplace online untuk elektronik, peralatan rumah tangga, dan perlengkapan kantor yang dirancang untuk pengalaman pengguna yang mulus.">An online marketplace for electronics, household appliances, and office equipment, designed for a seamless user experience.</p>
                     </div>
                 </div>
-                <!-- Project Card 3 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-56 relative overflow-hidden">
-                        <img src="Screenshot 2026-02-17 at 13.44.55.png" 
+                        <img src="Screenshot%202026-02-17%20at%2013.44.55.png"
                              alt="Values Data CSIT"
                              data-en-alt="Values Data CSIT"
                              data-id-alt="Nilai Data CSIT"
@@ -429,19 +620,17 @@
                            data-id="Saya membuat nilai data untuk perusahaan Jepang bernama Azurite.jp, dengan mencocokkan sekitar 7.800 data database menggunakan Firebase dan Google Analytics.">I created data values for a Japanese company, Azurite.jp, where I matched around 7,800 database records using Firebase and Google Analytics.</p>
                     </div>
                 </div>
-                <!-- Project Card 3 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-56 relative overflow-hidden">
-                        <img src="image.png" 
-                             alt=" Library Web Project"
+                        <img src="image.png"
+                             alt="Library Web Project"
                              data-en-alt="Web Project"
                              data-id-alt="Proyek Website"
                              class="w-full h-full object-cover transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Library Web " data-id="Web Perpustakaan">Web Project 
-                        </h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Library Web" data-id="Web Perpustakaan">Web Project</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
                            data-en="We built this website using React.js, Express, and Node.js. The project took more than two months due to limited API availability, and we used Supabase as the database."
                            data-id="Kami membangun website ini menggunakan React.js, Express, dan Node.js. Proyek ini memakan waktu lebih dari dua bulan karena keterbatasan API, dan kami menggunakan Supabase sebagai database.">We built this website using React.js, Express, and Node.js. The project took more than two months due to limited API availability, and we used Supabase as the database.</p>
@@ -460,7 +649,6 @@
             <div class="max-w-5xl mx-auto relative">
                 <div class="progress-bar rounded-full"></div>
                 <div class="relative">
-                    <!-- Timeline Item 1 -->
                     <div class="mb-12 sm:w-1/2 sm:pr-6 timeline-item left">
                         <div class="absolute w-4 h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full left-[-8px] mt-3 z-10"></div>
                         <div class="bg-white/5 border border-white/15 backdrop-blur-lg p-6 rounded-xl card-glow flex items-start transition-all duration-300 hover:scale-102">
@@ -469,14 +657,13 @@
                             </div>
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-2 gradient-text" data-en="Started at IDN Boarding School" data-id="Memulai di IDN Boarding School">Started at IDN Boarding School</h3>
-                                <p class="text-gray-200 text-sm md:text-base mb-2" data-en="Senior High School | July 2024" data-id="SMA | Juli 2024">Senior High School | July 2024</p>
+                                <p class="text-gray-300 text-sm md:text-base mb-2" data-en="Senior High School | July 2024" data-id="SMA | Juli 2024">Senior High School | July 2024</p>
                                 <p class="text-gray-300 text-sm md:text-base leading-relaxed"
                                    data-en="I began my SEO Analyst journey by learning HTML and CSS, and basic design using Figma and Canva."
                                    data-id="Saya memulai perjalanan sebagai SEO Analyst dengan belajar HTML, CSS, serta desain dasar menggunakan Figma dan Canva.">I began my SEO Analyst journey by learning HTML and CSS, and basic design using Figma and Canva.</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Timeline Item 2 -->
                     <div class="mb-12 sm:w-1/2 sm:ml-auto sm:pl-6 timeline-item right">
                         <div class="absolute w-4 h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full left-[-8px] mt-3 z-10"></div>
                         <div class="bg-white/5 border border-white/15 backdrop-blur-lg p-6 rounded-xl card-glow flex items-start transition-all duration-300 hover:scale-102">
@@ -485,14 +672,13 @@
                             </div>
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-2 gradient-text" data-en="First Laravel Project" data-id="Proyek Laravel Pertama">First Laravel Project</h3>
-                                <p class="text-gray-200 text-sm md:text-base mb-2" data-en="October 2024" data-id="Oktober 2024">October 2024</p>
+                                <p class="text-gray-300 text-sm md:text-base mb-2" data-en="October 2024" data-id="Oktober 2024">October 2024</p>
                                 <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                                   data-en="Completed my first CRUD application using Laravel. This project introduced me to MVC concepts, user authentication, and basic data management, while strengthening my understanding of clean and efficient code structure."
-                                   data-id="Menyelesaikan proyek aplikasi CRUD pertama saya menggunakan Laravel. Proyek ini mengenalkan saya pada konsep MVC, autentikasi pengguna, dan manajemen data sederhana, sekaligus memperkuat pemahaman tentang struktur kode yang rapi dan efisien.">Completed my first CRUD application using Laravel. This project introduced me to MVC concepts, user authentication, and basic data management, while strengthening my understanding of clean and efficient code structure.</p>
+                                   data-en="Completed my first CRUD application using Laravel. This project introduced me to MVC concepts, user authentication, and basic data management."
+                                   data-id="Menyelesaikan proyek aplikasi CRUD pertama saya menggunakan Laravel. Proyek ini mengenalkan saya pada konsep MVC, autentikasi pengguna, dan manajemen data sederhana.">Completed my first CRUD application using Laravel. This project introduced me to MVC concepts, user authentication, and basic data management.</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Timeline Item 3 -->
                     <div class="mb-12 sm:w-1/2 sm:pr-6 timeline-item left">
                         <div class="absolute w-4 h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full left-[-8px] mt-3 z-10"></div>
                         <div class="bg-white/10 border border-white/20 backdrop-blur-md p-6 rounded-xl card-glow flex items-start transform transition-all duration-300 hover:scale-105">
@@ -501,14 +687,13 @@
                             </div>
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-2 gradient-text" data-en="IDN Tangguh Program" data-id="Program IDN Tangguh">IDN Tangguh Program</h3>
-                                <p class="text-gray-200 text-sm md:text-base mb-2" data-en="January 2025" data-id="Januari 2025">January 2025</p>
+                                <p class="text-gray-300 text-sm md:text-base mb-2" data-en="January 2025" data-id="Januari 2025">January 2025</p>
                                 <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                                   data-en="Participated in the IDN Tangguh program in Kediri, focused on leadership and mental resilience. This experience improved my ability to face challenges, collaborate in teams, and handle tight project deadlines."
-                                   data-id="Mengikuti program IDN Tangguh di Kota Kediri yang berfokus pada pengembangan kepemimpinan dan ketahanan mental. Pengalaman ini meningkatkan kemampuan saya dalam menghadapi tantangan, berkolaborasi dalam tim, dan mengelola proyek dengan tenggat ketat.">Participated in the IDN Tangguh program in Kediri, focused on leadership and mental resilience. This experience improved my ability to face challenges, collaborate in teams, and handle tight project deadlines.</p>
+                                   data-en="Participated in the IDN Tangguh program in Kediri, focused on leadership and mental resilience."
+                                   data-id="Mengikuti program IDN Tangguh di Kota Kediri yang berfokus pada pengembangan kepemimpinan dan ketahanan mental.">Participated in the IDN Tangguh program in Kediri, focused on leadership and mental resilience.</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Timeline Item 4 -->
                     <div class="mb-12 sm:w-1/2 sm:ml-auto sm:pl-6 timeline-item right">
                         <div class="absolute w-4 h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full left-[-8px] mt-3 z-10"></div>
                         <div class="bg-white/10 border border-white/20 backdrop-blur-md p-6 rounded-xl card-glow flex items-start transform transition-all duration-300 hover:scale-105">
@@ -517,15 +702,13 @@
                             </div>
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-2 gradient-text" data-en="IDN Probono Project" data-id="Proyek IDN Probono">IDN Probono Project</h3>
-                                <p class="text-gray-200 text-sm md:text-base mb-2" data-en="May 2025" data-id="Mei 2025">May 2025</p>
+                                <p class="text-gray-300 text-sm md:text-base mb-2" data-en="May 2025" data-id="Mei 2025">May 2025</p>
                                 <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                                   data-en="Joined the IDN Probono Project and developed a web app for a nonprofit organization. The project involved complex authentication, role management with Spatie, and responsive frontend design using Laravel Blade."
-                                   data-id="Bergabung dalam Proyek IDN Probono dan mengembangkan aplikasi web untuk organisasi nonprofit. Proyek ini melibatkan autentikasi kompleks, manajemen role dengan Spatie, serta desain frontend responsif menggunakan Laravel Blade.">Joined the IDN Probono Project and developed a web app for a nonprofit organization. The project involved complex authentication, role management with Spatie, and responsive frontend design using Laravel Blade.</p>
+                                   data-en="Joined the IDN Probono Project and developed a web app for a nonprofit organization with complex authentication and role management."
+                                   data-id="Bergabung dalam Proyek IDN Probono dan mengembangkan aplikasi web untuk organisasi nonprofit dengan autentikasi kompleks dan manajemen role.">Joined the IDN Probono Project and developed a web app for a nonprofit organization with complex authentication and role management.</p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Timeline Item 7 -->
                     <div class="mb-12 sm:w-1/2 sm:pr-6 timeline-item left">
                         <div class="absolute w-4 h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full left-[-8px] mt-3 z-10"></div>
                         <div class="bg-white/10 border border-white/20 backdrop-blur-md p-6 rounded-xl card-glow flex items-start transform transition-all duration-300 hover:scale-105">
@@ -534,14 +717,13 @@
                             </div>
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold mb-2 gradient-text" data-en="Toyota Junior Technical SEO Program" data-id="Program Toyota Junior Technical SEO">Toyota Junior Technical SEO Program</h3>
-                                <p class="text-gray-200 text-sm md:text-base mb-2" data-en="November - December 2025" data-id="November - Desember 2025">November - December 2025</p>
+                                <p class="text-gray-300 text-sm md:text-base mb-2" data-en="November - December 2025" data-id="November - Desember 2025">November - December 2025</p>
                                 <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                                   data-en="I joined Toyota's Junior Technical SEO program for two months in Jakarta (online), from early November to December 31, 2025. I learned from senior SEO experts, from technical SEO fundamentals to content SEO."
-                                   data-id="Saya mengikuti program Toyota Junior Technical SEO selama dua bulan di Jakarta (online), dari awal November hingga 31 Desember 2025. Saya belajar dari para senior SEO, mulai dari dasar technical SEO hingga content SEO.">I joined Toyota's Junior Technical SEO program for two months in Jakarta (online), from early November to December 31, 2025. I learned from senior SEO experts, from technical SEO fundamentals to content SEO.</p>
+                                   data-en="I joined Toyota's Junior Technical SEO program for two months in Jakarta (online), learning from senior SEO experts."
+                                   data-id="Saya mengikuti program Toyota Junior Technical SEO selama dua bulan di Jakarta (online), belajar dari para senior SEO.">I joined Toyota's Junior Technical SEO program for two months in Jakarta (online), learning from senior SEO experts.</p>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -554,10 +736,9 @@
                 data-en="My Certificates"
                 data-id="Sertifikat Saya">My Certificates</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Certificate Card 1 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-80 relative overflow-hidden">
-                        <img src="Sertifikat1.png" 
+                        <img src="Sertifikat1.png"
                              alt="AI Fundamental"
                              data-en-alt="AI Fundamental"
                              data-id-alt="Dasar-Dasar AI"
@@ -567,14 +748,13 @@
                     <div class="p-6">
                         <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="AI Fundamental" data-id="Dasar-Dasar AI">AI Fundamental</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                           data-en="This certificate of competency demonstrates a deep understanding of the fundamental concepts of Artificial Intelligence (AI) and its application in industry. Through this class, I learned the fundamentals of data for AI development, the mechanics of machine learning, and an introduction to deep learning, a crucial pillar of future technology."
-                           data-id="Sertifikat kompetensi kelulusan ini membuktikan pemahaman mendalam mengenai konsep dasar Artificial Intelligence (AI) dan penerapannya di industri. Melalui kelas ini, saya telah mempelajari fundamental data untuk pengembangan AI, mekanisme Machine Learning, hingga pengenalan Deep Learning yang merupakan pilar penting dalam teknologi masa depan.">Sertifikat kompetensi kelulusan ini membuktikan pemahaman mendalam mengenai konsep dasar Artificial Intelligence (AI) dan penerapannya di industri. Melalui kelas ini, saya telah mempelajari fundamental data untuk pengembangan AI, mekanisme Machine Learning, hingga pengenalan Deep Learning yang merupakan pilar penting dalam teknologi masa depan.</p>
+                           data-en="This certificate demonstrates a deep understanding of fundamental AI concepts including machine learning and deep learning."
+                           data-id="Sertifikat ini membuktikan pemahaman mendalam mengenai konsep dasar AI termasuk machine learning dan deep learning.">This certificate demonstrates a deep understanding of fundamental AI concepts including machine learning and deep learning.</p>
                     </div>
                 </div>
-                <!-- Certificate Card 2 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-80 relative overflow-hidden">
-                        <img src="sertifikat2.png" 
+                        <img src="sertifikat2.png"
                              alt="Fundamental Dart"
                              data-en-alt="Fundamental Dart"
                              data-id-alt="Dasar-Dasar Dart"
@@ -584,14 +764,13 @@
                     <div class="p-6">
                         <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Fundamental Dart" data-id="Dasar-Dasar Dart">Fundamental Dart</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                           data-en="Certification for completing the Fundamental Dart course, covering basic syntax, object-oriented programming, and practical application development."
-                           data-id="Sertifikasi untuk menyelesaikan kursus Dasar-Dasar Dart, mencakup sintaks dasar, pemrograman berorientasi objek, dan pengembangan aplikasi praktis.">Certification for completing the Fundamental Dart course, covering basic syntax, object-oriented programming, and practical application development.</p>
+                           data-en="Certification for completing the Fundamental Dart course, covering basic syntax and object-oriented programming."
+                           data-id="Sertifikasi untuk menyelesaikan kursus Dasar-Dasar Dart, mencakup sintaks dasar dan pemrograman berorientasi objek.">Certification for completing the Fundamental Dart course, covering basic syntax and object-oriented programming.</p>
                     </div>
                 </div>
-                <!-- Certificate Card 3 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-80 relative overflow-hidden">
-                        <img src="sertifikat3.jpg" 
+                        <img src="sertifikat3.jpg"
                              alt="Fundamental CSS"
                              data-en-alt="Fundamental CSS"
                              data-id-alt="Dasar-Dasar CSS"
@@ -601,14 +780,13 @@
                     <div class="p-6">
                         <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Fundamental CSS" data-id="Dasar-Dasar CSS">Fundamental CSS</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                           data-en="Successful completion of the CSS fundamentals course, which covers styling web documents, managing multimedia elements, and creating responsive layouts, demonstrates theoretical and practical understanding of building visually appealing and structured websites."
-                           data-id="Berhasil menyelesaikan kursus dasar CSS, yang mencakup penataan gaya dokumen web, pengelolaan elemen multimedia, dan pembuatan tata letak responsif, menunjukkan pemahaman teoritis dan praktis tentang membangun situs web yang menarik secara visual dan terstruktur..">Berhasil menyelesaikan kursus dasar CSS, yang mencakup penataan gaya dokumen web, pengelolaan elemen multimedia, dan pembuatan tata letak responsif, menunjukkan pemahaman teoritis dan praktis tentang membangun situs web yang menarik secara visual dan terstruktur..</p>
+                           data-en="Completed the CSS fundamentals course covering styling, multimedia elements, and responsive layouts."
+                           data-id="Menyelesaikan kursus dasar CSS yang mencakup penataan gaya, elemen multimedia, dan tata letak responsif.">Completed the CSS fundamentals course covering styling, multimedia elements, and responsive layouts.</p>
                     </div>
                 </div>
-                <!-- Certificate Card 4 -->
                 <div class="bg-white/8 backdrop-blur-xl border border-white/15 rounded-2xl overflow-hidden card-glow transition-all duration-300 group shadow-xl">
                     <div class="h-80 relative overflow-hidden">
-                        <img src="sertifikat4.png" 
+                        <img src="sertifikat4.png"
                              alt="Fundamental HTML"
                              data-en-alt="Fundamental HTML"
                              data-id-alt="Dasar-Dasar HTML"
@@ -618,69 +796,385 @@
                     <div class="p-6">
                         <h3 class="text-xl md:text-2xl font-bold mb-3 gradient-text" data-en="Fundamental HTML" data-id="Dasar-Dasar HTML">Fundamental HTML</h3>
                         <p class="text-gray-300 text-sm md:text-base leading-relaxed"
-                           data-en="Successful completion of the HTML fundamentals course, which covers web document structure, managing multimedia elements, and creating forms and tables, demonstrates theoretical and practical understanding of building the basic framework of a semantic and structured website."
-                           data-id="Sertifikat untuk mengikuti program IDN Tangguh, berfokus pada pengembangan kepemimpinan dan ketahanan mental.">Berhasil menyelesaikan kursus fundamental HTML yang mencakup struktur dokumen web, pengelolaan elemen multimedia, serta pembuatan form dan tabel. Sertifikat ini menunjukkan pemahaman teoritis dan praktis dalam membangun kerangka dasar situs web yang semantik dan terstruktur.</p>
+                           data-en="Completed the HTML fundamentals course covering web document structure, multimedia, forms, and tables."
+                           data-id="Menyelesaikan kursus fundamental HTML yang mencakup struktur dokumen web, multimedia, form, dan tabel.">Completed the HTML fundamentals course covering web document structure, multimedia, forms, and tables.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Hobbies & Contact Section -->
-    <div class="mt-8 md:mt-16 text-center relative z-10"><h3 class="text-xl md:text-2xl lg:text-3xl font-extrabold mb-6 gradient-text" data-en="Hobbies" data-id="Hobi">Hobbies</h3><div class="flex flex-wrap justify-center gap-4 md:gap-8"><span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl" data-en="Photography" data-id="Fotografi">Photography</span><span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl" data-en="Travel" data-id="Traveling">Travel</span><span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl" data-en="Music" data-id="Musik">Music</span></div></div>
+    <div class="mt-8 md:mt-16 text-center relative z-10">
+        <h3 class="text-xl md:text-2xl lg:text-3xl font-extrabold mb-6 gradient-text" data-en="Hobbies" data-id="Hobi">Hobbies</h3>
+        <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+            <span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl text-gray-200" data-en="Photography" data-id="Fotografi">Photography</span>
+            <span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl text-gray-200" data-en="Travel" data-id="Traveling">Travel</span>
+            <span class="hobby-item px-6 py-2 md:px-8 md:py-3 bg-white/8 border border-white/15 rounded-full text-sm md:text-base font-medium shadow-xl backdrop-blur-xl text-gray-200" data-en="Music" data-id="Musik">Music</span>
+        </div>
+    </div>
+
     <section id="contact" class="py-12 md:py-20 lg:py-24 bg-transparent relative overflow-hidden">
-        <div class="container mx-auto px-4 sm:px-6 z-10"><h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 md:mb-16 text-center gradient-text" data-en="Get in Touch" data-id="Hubungi Saya">Get in Touch</h2>
-        <div class="text-center mb-10"><p class="text-base sm:text-lg md:text-xl text-gray-200 mb-6" data-en="I am open to new projects, collaborations, or just a chat about technology and creativity." data-id="Saya terbuka untuk proyek baru, kolaborasi, atau sekadar ngobrol tentang teknologi dan kreativitas.">I am open to new projects, collaborations, or just a chat about technology and creativity.</p>
-        <div class="flex justify-center space-x-5 mt-6"><a href="https://github.com/GipAtlh23" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-github text-xl md:text-2xl"></i></a><a href="https://www.linkedin.com/in/ghifari-atallah-20a93931b/" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-linkedin text-xl md:text-2xl"></i></a><a href="https://www.instagram.com/ghiffariath" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-instagram text-xl md:text-2xl"></i></a></div>
-        <div class="mt-5"><p class="text-sm md:text-base text-gray-300 flex items-center justify-center space-x-2"><i class="fas fa-envelope"></i><span>atalahghifari333@gmail.com</span></p></div></div>
-        <div class="max-w-lg mx-auto"><div class="space-y-5 bg-white/10 border border-white/20 backdrop-blur-3xl p-6 md:p-8 rounded-3xl shadow-2xl liquid-glass"><div class="relative"><input type="text" placeholder="Your Name" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base"><i class="fas fa-user absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i></div><div class="relative"><input type="email" placeholder="Your Email" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base"><i class="fas fa-envelope absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i></div><div class="relative"><textarea placeholder="Your Message" rows="4" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base"></textarea><i class="fas fa-comment absolute right-4 top-4 text-gray-400"></i></div><button class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-2 md:py-3 rounded-lg transition text-sm md:text-base font-semibold shadow-lg" data-en="Send Message" data-id="Kirim Pesan">Send Message</button></div></div></div>
+        <div class="container mx-auto px-4 sm:px-6 z-10">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 md:mb-16 text-center gradient-text" data-en="Get in Touch" data-id="Hubungi Saya">Get in Touch</h2>
+            <div class="text-center mb-10">
+                <p class="text-base sm:text-lg md:text-xl text-gray-200 mb-6" data-en="I am open to new projects, collaborations, or just a chat about technology and creativity." data-id="Saya terbuka untuk proyek baru, kolaborasi, atau sekadar ngobrol tentang teknologi dan kreativitas.">I am open to new projects, collaborations, or just a chat about technology and creativity.</p>
+                <div class="flex justify-center space-x-5 mt-6">
+                    <a href="https://github.com/GipAtlh23" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-github text-xl md:text-2xl"></i></a>
+                    <a href="https://www.linkedin.com/in/ghifari-atallah-20a93931b/" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-linkedin text-xl md:text-2xl"></i></a>
+                    <a href="https://www.instagram.com/ghiffariath" target="_blank" class="text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-125"><i class="fab fa-instagram text-xl md:text-2xl"></i></a>
+                </div>
+                <div class="mt-5">
+                    <p class="text-sm md:text-base text-gray-300 flex items-center justify-center space-x-2"><i class="fas fa-envelope"></i><span>atalahghifari333@gmail.com</span></p>
+                </div>
+            </div>
+            <div class="max-w-lg mx-auto">
+                <div class="space-y-5 bg-white/10 border border-white/20 backdrop-blur-3xl p-6 md:p-8 rounded-3xl shadow-2xl liquid-glass">
+                    <div class="relative">
+                        <input type="text" placeholder="Your Name" data-en-placeholder="Your Name" data-id-placeholder="Nama Anda" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base text-white placeholder-gray-300">
+                        <i class="fas fa-user absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <div class="relative">
+                        <input type="email" placeholder="Your Email" data-en-placeholder="Your Email" data-id-placeholder="Email Anda" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base text-white placeholder-gray-300">
+                        <i class="fas fa-envelope absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <div class="relative">
+                        <textarea placeholder="Your Message" data-en-placeholder="Your Message" data-id-placeholder="Pesan Anda" rows="4" class="w-full px-4 py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 text-sm md:text-base text-white placeholder-gray-300"></textarea>
+                        <i class="fas fa-comment absolute right-4 top-4 text-gray-400"></i>
+                    </div>
+                    <button class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-6 py-2 md:py-3 rounded-lg transition text-sm md:text-base font-semibold shadow-lg" data-en="Send Message" data-id="Kirim Pesan">Send Message</button>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <!-- Floating Controls -->
+    <div class="fixed bottom-4 right-4 z-[9999]">
+        <div class="floating-controls-group flex flex-col sm:flex-row gap-2 sm:gap-2 liquid-glass rounded-2xl p-2 sm:p-2 shadow-2xl border border-white/30 bg-white/10 backdrop-blur-xl">
+            <button id="theme-toggle" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl flex items-center justify-center gap-1 sm:gap-2">
+                <i id="theme-icon" class="fas fa-moon text-sm sm:text-base"></i>
+                <span id="theme-text" data-en="Dark" data-id="Gelap" class="hidden xs:inline">Dark</span>
+            </button>
+            <button id="lang-en" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl">EN</button>
+            <button id="lang-id" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-white/10 hover:bg-cyan-400/40 transition-all backdrop-blur-xl">ID</button>
+        </div>
+    </div>
+
     <script>
-        // TYPING ANIMATION (tidak berubah)
+        // ========== TYPING ANIMATION ==========
         const typedTextEl = document.getElementById('typed-text');
         const roles = ['Frontend Developer', 'SEO Analyst', 'AI Enthusiast', 'DKV'];
-        let roleIndex = 0, charIndex = 0, isDeleting = false;
+        let roleIndex = 0,
+            charIndex = 0,
+            isDeleting = false;
+
         function typeRole() {
             const current = roles[roleIndex];
-            typedTextEl.textContent = !isDeleting ? current.substring(0, charIndex+1) : current.substring(0, charIndex-1);
+            typedTextEl.textContent = !isDeleting ? current.substring(0, charIndex + 1) : current.substring(0, charIndex -
+                1);
             charIndex += isDeleting ? -1 : 1;
-            if (!isDeleting && charIndex === current.length) { isDeleting = true; setTimeout(typeRole, 1200); }
-            else if (isDeleting && charIndex === 0) { isDeleting = false; roleIndex = (roleIndex+1)%roles.length; setTimeout(typeRole, 80); }
-            else setTimeout(typeRole, isDeleting ? 40 : 80);
+            if (!isDeleting && charIndex === current.length) {
+                isDeleting = true;
+                setTimeout(typeRole, 1200);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeRole, 80);
+            } else setTimeout(typeRole, isDeleting ? 40 : 80);
         }
         document.addEventListener('DOMContentLoaded', () => setTimeout(typeRole, 500));
-        
-        // 3D Background
+
+        // ========== 3D BACKGROUND - DINAMIS & PELAN ==========
         const containerBg = document.getElementById('full-canvas-bg');
-        const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000), renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight); renderer.setClearColor(0x000000,0); containerBg.appendChild(renderer.domElement);
-        const particlesCount = 10000, posArr = new Float32Array(particlesCount*3), colArr = new Float32Array(particlesCount*3);
-        for(let i=0;i<particlesCount;i++){ posArr[i*3]=(Math.random()-0.5)*14; posArr[i*3+1]=(Math.random()-0.5)*12; posArr[i*3+2]=(Math.random()-0.5)*18; colArr[i*3]=0.2+Math.random()*0.6; colArr[i*3+1]=0.6+Math.random()*0.4; colArr[i*3+2]=0.7+Math.random()*0.3; }
-        const partGeo = new THREE.BufferGeometry(); partGeo.setAttribute('position', new THREE.BufferAttribute(posArr,3)); partGeo.setAttribute('color', new THREE.BufferAttribute(colArr,3));
-        const partMat = new THREE.ShaderMaterial({ uniforms:{ uTime:{value:0}, uIsLight:{value:false} }, vertexShader:`attribute vec3 color; varying vec3 vColor; uniform float uTime; void main(){ vColor=color; vec3 pos=position; pos.x+=sin(uTime*0.6+pos.y)*0.1; pos.y+=cos(uTime*0.5+pos.z)*0.1; vec4 mv=modelViewMatrix*vec4(pos,1.0); gl_PointSize=(5.5/-mv.z)*1.3; gl_Position=projectionMatrix*mv; }`, fragmentShader:`uniform bool uIsLight; varying vec3 vColor; void main(){ float s=1.0-distance(gl_PointCoord,vec2(0.5)); s=pow(s,2.5); if(uIsLight) gl_FragColor=vec4(0.05,0.05,0.12,s*0.9); else gl_FragColor=vec4(vColor,s*0.8); }`, transparent:true, blending:THREE.AdditiveBlending });
-        const points = new THREE.Points(partGeo, partMat); scene.add(points); camera.position.z=7; let clock=new THREE.Clock();
-        function animateBg(){ requestAnimationFrame(animateBg); partMat.uniforms.uTime.value=clock.getElapsedTime(); points.rotation.y+=0.0025; points.rotation.x=Math.sin(Date.now()*0.0005)*0.05; renderer.render(scene,camera); } animateBg();
-        window.addEventListener('resize', ()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
-        
-        // Theme toggle + update teks tombol
-        const themeBtn=document.getElementById('theme-toggle'), themeIcon=document.getElementById('theme-icon'), themeSpan=document.getElementById('theme-text');
-        function applyTheme(isDark){ if(isDark){ document.body.classList.remove('light-mode'); themeIcon.className='fas fa-moon'; themeSpan.textContent=(document.documentElement.lang==='en'?'Dark':'Gelap'); partMat.uniforms.uIsLight.value=false; }else{ document.body.classList.add('light-mode'); themeIcon.className='fas fa-sun'; themeSpan.textContent=(document.documentElement.lang==='en'?'Light':'Terang'); partMat.uniforms.uIsLight.value=true; } }
-        function setTheme(theme){ applyTheme(theme==='dark'); localStorage.setItem('portfolio-theme',theme); }
-        themeBtn.addEventListener('click',()=>{ const isLight=document.body.classList.contains('light-mode'); setTheme(isLight?'dark':'light'); });
-        const savedTheme=localStorage.getItem('portfolio-theme'); if(savedTheme==='light') setTheme('light'); else if(savedTheme==='dark') setTheme('dark'); else{ const prefersLight=window.matchMedia('(prefers-color-scheme: light)').matches; setTheme(prefersLight?'light':'dark'); }
-        
-        // Language + update theme text
-        const langEn=document.getElementById('lang-en'), langId=document.getElementById('lang-id');
-        function setLanguage(lang){ document.documentElement.lang=lang; document.querySelectorAll('[data-en]').forEach(el=>{ const val=el.getAttribute(`data-${lang}`); if(val){ if(el.tagName==='TITLE') document.title=val; else el.textContent=val; } }); document.querySelectorAll('[data-en-placeholder]').forEach(el=>{ const val=el.getAttribute(`data-${lang}-placeholder`); if(val) el.placeholder=val; }); document.querySelectorAll('[data-en-alt]').forEach(el=>{ const val=el.getAttribute(`data-${lang}-alt`); if(val) el.alt=val; }); if(lang==='en'){ langEn.classList.add('bg-cyan-500/70'); langId.classList.remove('bg-cyan-500/70'); }else{ langId.classList.add('bg-cyan-500/70'); langEn.classList.remove('bg-cyan-500/70'); } localStorage.setItem('portfolio-lang',lang); const isLight=document.body.classList.contains('light-mode'); themeSpan.textContent=isLight?(lang==='en'?'Light':'Terang'):(lang==='en'?'Dark':'Gelap'); }
-        langEn.onclick=()=>setLanguage('en'); langId.onclick=()=>setLanguage('id'); setLanguage(localStorage.getItem('portfolio-lang')||'en');
-        
-        // Smooth scroll, mobile menu, timeline GSAP
-        document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){ e.preventDefault(); document.querySelector(this.getAttribute('href')).scrollIntoView({behavior:'smooth'}); }));
-        document.getElementById('mobile-menu-btn')?.addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('hidden'));
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        containerBg.appendChild(renderer.domElement);
+
+        const particlesCount = 12000;
+        const posArr = new Float32Array(particlesCount * 3);
+        const colArr = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount; i++) {
+            posArr[i * 3] = (Math.random() - 0.5) * 16;
+            posArr[i * 3 + 1] = (Math.random() - 0.5) * 14;
+            posArr[i * 3 + 2] = (Math.random() - 0.5) * 20;
+            colArr[i * 3] = 0.2 + Math.random() * 0.6;
+            colArr[i * 3 + 1] = 0.55 + Math.random() * 0.45;
+            colArr[i * 3 + 2] = 0.65 + Math.random() * 0.35;
+        }
+        const partGeo = new THREE.BufferGeometry();
+        partGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+        partGeo.setAttribute('color', new THREE.BufferAttribute(colArr, 3));
+
+        const partMat = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uIsLight: { value: false },
+                uMouseX: { value: 0 },
+                uMouseY: { value: 0 },
+            },
+            vertexShader: /* glsl */ `
+                attribute vec3 color;
+                varying vec3 vColor;
+                varying float vDist;
+                uniform float uTime;
+                uniform float uMouseX;
+                uniform float uMouseY;
+                void main() {
+                    vColor = color;
+                    vec3 pos = position;
+                    // Gerakan gelombang lembut multi-layer
+                    float wave1 = sin(uTime * 0.25 + pos.y * 1.2) * 0.06;
+                    float wave2 = cos(uTime * 0.2 + pos.z * 0.9) * 0.05;
+                    float wave3 = sin(uTime * 0.3 + pos.x * 0.7) * 0.04;
+                    pos.x += wave1 + wave3 * 0.5;
+                    pos.y += wave2 + wave1 * 0.4;
+                    pos.z += cos(uTime * 0.22 + pos.x * 0.8) * 0.05;
+                    vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+                    float dist = length(mv.xyz);
+                    vDist = dist;
+                    gl_PointSize = (6.5 / -mv.z) * 1.2;
+                    gl_Position = projectionMatrix * mv;
+                }
+            `,
+            fragmentShader: /* glsl */ `
+                uniform bool uIsLight;
+                varying vec3 vColor;
+                varying float vDist;
+                void main() {
+                    float s = 1.0 - distance(gl_PointCoord, vec2(0.5));
+                    s = pow(s, 2.8);
+                    float alpha = s * 0.75;
+                    if (uIsLight) {
+                        gl_FragColor = vec4(0.06, 0.06, 0.14, alpha * 0.7);
+                    } else {
+                        gl_FragColor = vec4(vColor, alpha);
+                    }
+                }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+        });
+
+        const points = new THREE.Points(partGeo, partMat);
+        scene.add(points);
+        camera.position.z = 8;
+
+        // Secondary subtle particle ring
+        const ringGeo = new THREE.BufferGeometry();
+        const ringCount = 3000;
+        const ringPos = new Float32Array(ringCount * 3);
+        const ringCol = new Float32Array(ringCount * 3);
+        for (let i = 0; i < ringCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 5 + Math.random() * 6;
+            ringPos[i * 3] = Math.cos(angle) * radius;
+            ringPos[i * 3 + 1] = (Math.random() - 0.5) * 8;
+            ringPos[i * 3 + 2] = Math.sin(angle) * radius;
+            ringCol[i * 3] = 0.3;
+            ringCol[i * 3 + 1] = 0.7;
+            ringCol[i * 3 + 2] = 0.8;
+        }
+        ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
+        ringGeo.setAttribute('color', new THREE.BufferAttribute(ringCol, 3));
+        const ringMat = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uIsLight: { value: false },
+            },
+            vertexShader: /* glsl */ `
+                attribute vec3 color;
+                varying vec3 vColor;
+                uniform float uTime;
+                void main() {
+                    vColor = color;
+                    vec3 pos = position;
+                    pos.y += sin(uTime * 0.35 + pos.x * 0.5) * 0.08;
+                    pos.x += cos(uTime * 0.3 + pos.z * 0.5) * 0.06;
+                    vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = (3.5 / -mv.z) * 1.0;
+                    gl_Position = projectionMatrix * mv;
+                }
+            `,
+            fragmentShader: /* glsl */ `
+                uniform bool uIsLight;
+                varying vec3 vColor;
+                void main() {
+                    float s = 1.0 - distance(gl_PointCoord, vec2(0.5));
+                    s = pow(s, 2.2);
+                    if (uIsLight) {
+                        gl_FragColor = vec4(0.08, 0.08, 0.18, s * 0.5);
+                    } else {
+                        gl_FragColor = vec4(vColor, s * 0.55);
+                    }
+                }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+        });
+        const ringPoints = new THREE.Points(ringGeo, ringMat);
+        scene.add(ringPoints);
+
+        let clock = new THREE.Clock();
+        let mouseX = 0,
+            mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animateBg() {
+            requestAnimationFrame(animateBg);
+            const elapsed = clock.getElapsedTime();
+            partMat.uniforms.uTime.value = elapsed;
+            ringMat.uniforms.uTime.value = elapsed;
+
+            // Rotasi sangat pelan
+            points.rotation.y += 0.0007;
+            ringPoints.rotation.y -= 0.0005;
+
+            // Osilasi lembut pada sumbu X dan Z
+            points.rotation.x = Math.sin(elapsed * 0.18) * 0.04;
+            points.rotation.z = Math.cos(elapsed * 0.15) * 0.03;
+            ringPoints.rotation.x = Math.cos(elapsed * 0.2) * 0.05;
+            ringPoints.rotation.z = Math.sin(elapsed * 0.17) * 0.04;
+
+            // Kamera bergerak sangat halus mengikuti mouse
+            camera.position.x += (mouseX * 0.6 - camera.position.x) * 0.015;
+            camera.position.y += (mouseY * 0.4 - camera.position.y) * 0.015;
+            camera.lookAt(scene.position);
+
+            // Breathing effect pada skala
+            const breathe = 1 + Math.sin(elapsed * 0.3) * 0.015;
+            points.scale.setScalar(breathe);
+
+            renderer.render(scene, camera);
+        }
+        animateBg();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeBtn = document.getElementById('theme-toggle'),
+            themeIcon = document.getElementById('theme-icon'),
+            themeSpan = document.getElementById('theme-text');
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.body.classList.remove('light-mode');
+                themeIcon.className = 'fas fa-moon';
+                themeSpan.textContent = (document.documentElement.lang === 'en' ? 'Dark' : 'Gelap');
+                partMat.uniforms.uIsLight.value = false;
+                ringMat.uniforms.uIsLight.value = false;
+            } else {
+                document.body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeSpan.textContent = (document.documentElement.lang === 'en' ? 'Light' : 'Terang');
+                partMat.uniforms.uIsLight.value = true;
+                ringMat.uniforms.uIsLight.value = true;
+            }
+        }
+
+        function setTheme(theme) {
+            applyTheme(theme === 'dark');
+            localStorage.setItem('portfolio-theme', theme);
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const isLight = document.body.classList.contains('light-mode');
+            setTheme(isLight ? 'dark' : 'light');
+        });
+
+        const savedTheme = localStorage.getItem('portfolio-theme');
+        if (savedTheme === 'light') setTheme('light');
+        else if (savedTheme === 'dark') setTheme('dark');
+        else {
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            setTheme(prefersLight ? 'light' : 'dark');
+        }
+
+        // ========== LANGUAGE SWITCHER ==========
+        const langEn = document.getElementById('lang-en'),
+            langId = document.getElementById('lang-id');
+
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const val = el.getAttribute(`data-${lang}`);
+                if (val) {
+                    if (el.tagName === 'TITLE') document.title = val;
+                    else el.textContent = val;
+                }
+            });
+            document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+                const val = el.getAttribute(`data-${lang}-placeholder`);
+                if (val) el.placeholder = val;
+            });
+            document.querySelectorAll('[data-en-alt]').forEach(el => {
+                const val = el.getAttribute(`data-${lang}-alt`);
+                if (val) el.alt = val;
+            });
+            if (lang === 'en') {
+                langEn.classList.add('bg-cyan-500/70');
+                langId.classList.remove('bg-cyan-500/70');
+            } else {
+                langId.classList.add('bg-cyan-500/70');
+                langEn.classList.remove('bg-cyan-500/70');
+            }
+            localStorage.setItem('portfolio-lang', lang);
+            const isLight = document.body.classList.contains('light-mode');
+            themeSpan.textContent = isLight ? (lang === 'en' ? 'Light' : 'Terang') : (lang === 'en' ? 'Dark' :
+            'Gelap');
+        }
+        langEn.onclick = () => setLanguage('en');
+        langId.onclick = () => setLanguage('id');
+        setLanguage(localStorage.getItem('portfolio-lang') || 'en');
+
+        // ========== SMOOTH SCROLL & MOBILE MENU ==========
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobile-menu')?.classList.add('hidden');
+        }));
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', () => document.getElementById(
+            'mobile-menu').classList.toggle('hidden'));
+
+        // ========== GSAP ANIMATIONS ==========
         gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.timeline-item').forEach(el=>{ gsap.fromTo(el,{opacity:0,x:el.classList.contains('left')?-20:20},{scrollTrigger:{trigger:el,start:'top 85%'},opacity:1,x:0,duration:0.5}); });
-        gsap.to('.progress-bar',{scrollTrigger:{trigger:'#experience',start:'top 80%',end:'bottom 20%',scrub:0.5},height:'100%'});
-        window.addEventListener('load',()=>{ setTimeout(()=>{ gsap.to('#loading-screen',{opacity:0,duration:0.3,onComplete:()=>document.getElementById('loading-screen').style.display='none'}); },500); });
+        gsap.utils.toArray('.timeline-item').forEach(el => {
+            gsap.fromTo(el, { opacity: 0, x: el.classList.contains('left') ? -20 : 20 }, {
+                scrollTrigger: { trigger: el, start: 'top 85%' },
+                opacity: 1,
+                x: 0,
+                duration: 0.5
+            });
+        });
+        gsap.to('.progress-bar', {
+            scrollTrigger: { trigger: '#experience', start: 'top 80%', end: 'bottom 20%', scrub: 0.5 },
+            height: '100%'
+        });
+
+        // ========== LOADING SCREEN ==========
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                gsap.to('#loading-screen', {
+                    opacity: 0,
+                    duration: 0.4,
+                    onComplete: () => document.getElementById('loading-screen').style.display =
+                        'none'
+                });
+            }, 600);
+        });
     </script>
 </body>
 </html>
