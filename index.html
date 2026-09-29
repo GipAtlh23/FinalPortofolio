@@ -144,7 +144,7 @@
                 transform: translateY(10vh) rotate(324deg) scale(0.8);
             }
             100% {
-                transform: translateY(-10vh) rotate(360deg) scale(0);
+                transform: translateY(-10vh) rotate(-10deg) scale(0);
                 opacity: 0;
             }
         }
@@ -2794,18 +2794,21 @@
                         <span>atalahghifari333@gmail.com</span>
                     </div>
                 </div>
-                <div class="contact-form">
+                
+                <!-- BAGIAN FORM CONTACT YANG DIBERIKAN ATRIBUT NAME & ID -->
+                <form id="contact-form" class="contact-form">
                     <div class="form-field">
-                        <input type="text" placeholder="Your Name" data-en-placeholder="Your Name" data-id-placeholder="Nama Anda">
+                        <input type="text" name="name" id="name" placeholder="Your Name" data-en-placeholder="Your Name" data-id-placeholder="Nama Anda" required>
                     </div>
                     <div class="form-field">
-                        <input type="email" placeholder="Your Email" data-en-placeholder="Your Email" data-id-placeholder="Email Anda">
+                        <input type="email" name="email" id="email" placeholder="Your Email" data-en-placeholder="Your Email" data-id-placeholder="Email Anda" required>
                     </div>
                     <div class="form-field">
-                        <textarea placeholder="Your Message" data-en-placeholder="Your Message" data-id-placeholder="Pesan Anda"></textarea>
+                        <textarea name="message" id="message" placeholder="Your Message" data-en-placeholder="Your Message" data-id-placeholder="Pesan Anda" required></textarea>
                     </div>
-                    <button class="btn-submit" data-en="Send Message →" data-id="Kirim Pesan →">Send Message →</button>
-                </div>
+                    <button type="submit" id="submit-btn" class="btn-submit" data-en="Send Message →" data-id="Kirim Pesan →">Send Message →</button>
+                </form>
+                
             </div>
         </div>
     </section>
@@ -3085,6 +3088,36 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
             revealObserver.observe(el);
+        });
+
+        // ═══ HANDLER PENGIRIMAN FORM KE GOOGLE APPS SCRIPT ═══
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzrFv3peTcD-W13KA-zDETCwRRO6zFgAGbQ3z1xqSSmiq7LmVsFJougP1td0cZrY4yu/exec';
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        contactForm.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'SENDING...';
+            submitBtn.disabled = true;
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(contactForm)
+            })
+            .then(response => {
+                alert('Pesan kamu berhasil terkirim!');
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+                contactForm.reset();
+            })
+            .catch(error => {
+                alert('Terjadi kesalahan, gagal mengirim pesan.');
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+                console.error('Error!', error.message);
+            });
         });
 
         console.log('%c🚀 Giip Portfolio %cLoaded!',
